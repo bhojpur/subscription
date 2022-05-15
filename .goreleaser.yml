@@ -1,0 +1,78 @@
+project_name: subscription
+before:
+  hooks:
+    - go mod tidy
+dist: release
+source:
+  enabled: true
+  name_template: '{{ .ProjectName }}-{{ .Tag }}-source'
+checksum:
+  name_template: '{{ .ProjectName }}-{{ .Tag }}-checksums.txt'
+builds:
+- id: subsctl
+  env:
+  - CGO_ENABLED=0
+  main: ./cmd/client/main.go
+  binary: subsctl
+  ldflags:
+  - -s -w
+  - -X "github.com/bhojpur/subscription/pkg/version.Version={{.Version}}-{{.ShortCommit}}"
+  - -X "github.com/bhojpur/subscription/pkg/version.BuildTime={{ time "2006-01-02 15:04:05 MST" }}"
+  - -X "github.com/bhojpur/subscription/pkg/version.BuildCommit={{ .FullCommit }}"
+- id: subssvr
+  env:
+  - CGO_ENABLED=0
+  main: ./cmd/server/main.go
+  binary: subssvr
+  ldflags:
+  - -s -w
+  - -X "github.com/bhojpur/subscription/pkg/version.Version={{.Version}}-{{.ShortCommit}}"
+  - -X "github.com/bhojpur/subscription/pkg/version.BuildTime={{ time "2006-01-02 15:04:05 MST" }}"
+  - -X "github.com/bhojpur/subscription/pkg/version.BuildCommit={{ .FullCommit }}"
+archives:
+- id: subsctl
+  files:
+  - "none*"
+  format: binary # this removes the tar of the archives, leaving the binaries alone
+  name_template: subsctl-{{ .Tag }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    386: i386
+    amd64: x86_64
+  builds:
+  - subsctl
+- id: subssvr
+  files:
+  - "none*"
+  format: binary # this removes the tar of the archives, leaving the binaries alone
+  name_template: subssvr-{{ .Tag }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}
+  builds:
+  - subssvr
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    386: i386
+    amd64: x86_64
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+release:
+  prerelease: auto
+  header: |
+    Bhojpur Subscription is a high performance subscription engine driving many distributed applications
+    and services running over the Bhojpur.NET Platform.
+dockers:
+  - goos: linux
+    goarch: amd64
+    goarm: ''
+    dockerfile: Dockerfile
+    image_templates:
+    - "ghcr.io/bhojpur/subscription:{{ .Tag }}"
+    extra_files:
+    - README.md

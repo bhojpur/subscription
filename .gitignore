@@ -1,3 +1,6 @@
+/.vscode
+/bin
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -12,4 +15,16 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
+
+# IntelliJ files
+.idea/
+*.iml
+
+# Go performances files
+*.pdf
+*.svg
+
+# Other files
+*.log
+.DS_Store

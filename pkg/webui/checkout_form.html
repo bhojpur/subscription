@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Bhojpur Subscription - Dashboard</title>
+  	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+
+<body>
+	<!-- Set the form action to the route of the handler responsible for receiving the token from Bhojpur Subscription -->
+	<form action="/payment/new" method="POST">
+		<!-- We're using the latest v1 API here -->
+		<script
+		src="https://checkout.bhojpur.net/v1/checkout.js" class="bhojpur-button"
+		data-key="{{ .PublishableKey }}"
+		data-amount="2000"
+		data-name="Bhojpur Subscription + Go Demo"
+		data-description="2 widgets (Rs. 20.00)"
+		data-currency="inr"
+		data-image="/128x128.png">
+		</script>
+	</form>
+</body>

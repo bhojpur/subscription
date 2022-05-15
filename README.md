@@ -1,2 +1,5 @@
-# subscription
-The Bhojpur Subscription is a software-as-a-service product used as a Subscription Engine based on Bhojpur.NET Platform for application delivery.
+# Bhojpur Subscription - Management Engine
+
+The `Bhojpur Subscription` is a consumption-based plan subscription engine applied within
+the [Bhojpur.NET Platform](https://github.com/bhojpur/platform/) for delivery of distributed
+`applications` or `services`.
